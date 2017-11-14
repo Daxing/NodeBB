@@ -161,7 +161,7 @@ describe('authentication', function () {
 				assert(body);
 
 				request({
-					url: nconf.get('url') + '/api/me',
+					url: nconf.get('url') + '/api/user/admin',
 					json: true,
 					jar: jar,
 				}, function (err, response, body) {
@@ -183,11 +183,12 @@ describe('authentication', function () {
 		helpers.logoutUser(jar, function (err) {
 			assert.ifError(err);
 			request({
-				url: nconf.get('url') + '/api/me',
+				url: nconf.get('url') + '/me',
 				json: true,
 				jar: jar,
-			}, function (err, response, body) {
+			}, function (err, res, body) {
 				assert.ifError(err);
+				assert.equal(res.statusCode, 401);
 				assert.equal(body, 'not-authorized');
 				done();
 			});
@@ -200,7 +201,7 @@ describe('authentication', function () {
 			assert(body);
 
 			request({
-				url: nconf.get('url') + '/api/me',
+				url: nconf.get('url') + '/api/user/regular',
 				json: true,
 				jar: jar,
 			}, function (err, response, body) {
